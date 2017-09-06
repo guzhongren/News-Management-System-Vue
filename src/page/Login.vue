@@ -21,7 +21,7 @@
     <el-row>
       <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="12">
-        <el-button type="primary" :disabled="isLoginBtnDisable">登录</el-button>
+        <el-button type="primary" :disabled="isLoginBtnDisable" @click='login'>登录</el-button>
       </el-col>
       <el-col :span="6"></el-col>
     </el-row>
@@ -39,16 +39,35 @@ export default {
     }
   },
   components: {},
+  created: () => {
+  },
   methods: {
     refresh () {
       window.location.reload()
+    },
+    login (evt) {
+      if (!this.isLoginBtnDisable) {
+        let params = {
+          account: this.username,
+          password: this.userPass
+        }
+        this.$api.post('login', params, (resp) => {
+          console.log(resp)
+          resp ? this.setUserInfoToGo() : null
+        }, (errObj) => {
+          console.log('login error', JSON.stringify(errObj))
+        })
+      }
+    },
+    setUserInfoToGo (userInfo) {
+      this.$utils.setLoginState(userInfo)
+      this.$router.push('/cms')
     },
     usernameChange (evt) {
       // evt ? this.username = evt && this.userPass ? this.isLoginBtnDisable = true && console.log(this.isLoginBtnDisable) : this.isLoginBtnDisable = false : this.username = null
       if (evt) {
         this.username = evt
         this.userPass ? this.isLoginBtnDisable = false : this.isLoginBtnDisable = true
-        console.log(this.isLoginBtnDisable)
       } else {
         this.username = null
         this.isLoginBtnDisable = true
@@ -59,7 +78,6 @@ export default {
       if (evt) {
         this.userPass = evt
         this.username ? this.isLoginBtnDisable = false : this.isLoginBtnDisable = true
-        console.log(this.isLoginBtnDisable)
       } else {
         this.userPass = null
         this.isLoginBtnDisable = true

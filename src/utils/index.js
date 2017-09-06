@@ -3,16 +3,16 @@ export default {
   /**
    *  set user info in sessionStorage
    * @param userInfo  Object   user info
-   * @return none   
+   * @return none
    */
-  setLoginState: (userInfo)=> {
+  setLoginState: (userInfo) => {
     window.sessionStorage.setItem(KEY, JSON.stringify(userInfo))
   },
   /**
    *  get user info from sessionStorage
-   * @return userInfo Object  user info   
+   * @return userInfo Object  user Info
    */
-  getLoginState:  ()=>{
+  getLoginState: () => {
     return window.sessionStorage.getItem(KEY)
   }
 
