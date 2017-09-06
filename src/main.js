@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-default/index.css'
 Vue.use(ElementUI)
 import api from './api/index.js'
 Vue.prototype.$api = api
+import utils from './utils'
+Vue.prototype.$utils = utils
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
