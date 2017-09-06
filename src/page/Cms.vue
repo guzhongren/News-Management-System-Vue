@@ -9,11 +9,11 @@
       <!-- content -->
       <el-row>
         <!-- menu bar -->
-        <el-col :span="6" >
+        <el-col :span="4" >
           <Navbar></Navbar>
         </el-col>
         <!-- menu content -->
-        <el-col :span="18"><div class='magin'></div></el-col>
+        <el-col :span="20"><div class='magin'></div></el-col>
       </el-row>
     </div>
 
@@ -27,6 +27,9 @@ import Sign from '../components/Sign'
 
 export default {
   name: 'cms',
+  props: {
+    // clickMenu:
+  },
   data () {
     return {
       appTitle: 'Congred CMS', // Name of Ap

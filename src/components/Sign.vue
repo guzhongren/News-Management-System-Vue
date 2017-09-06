@@ -1,5 +1,5 @@
 <template>
-  <span :class="['login', {isLoginClass: isLogin}]" id='logInState' @click='processLogin'>{{isLogin? '退出': '登录'}}</span>
+  <span :class="['login', {'isLoginClass': isLogin}]" id='logInState' @click='processLogin'>{{isLogin? '退出': '登录'}}</span>
 </template>
 
 <script>
