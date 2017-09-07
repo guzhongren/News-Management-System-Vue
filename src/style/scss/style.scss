@@ -1,0 +1,16 @@
+@import "../base/style";
+.cms{
+  color: #fff;
+  height: 100%;
+}
+.cms-title{
+  background-color: #324157;
+  height: $cms-title-height;
+}
+.cms-content{
+  height: $cms-content-heigth;
+}
+.per-cms-content{
+  height: 100%;
+  background-color: red;
+}

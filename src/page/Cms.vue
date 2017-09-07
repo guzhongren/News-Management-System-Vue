@@ -1,18 +1,22 @@
 <template>
-    <div class='cms-title'>
-      <el-row>
+    <div class='cms'>
+      <el-row class="cms-title">
         <el-col :span="10"><div class='cms-title-left paddings'><span>{{this.appTitle}}</span></div></el-col>
         <el-col :span="11"><div class='paddings'></div></el-col>
-        <el-col :span="3"><div class='paddings'><Sign ></Sign></div></el-col>
+        <el-col :span="3"><div class='paddings'><sign ></sign></div></el-col>
       </el-row>
       <!-- content -->
-      <el-row>
+      <el-row class='cms-content'>
         <!-- menu bar -->
         <el-col :span="4" >
-          <Navbar></Navbar>
+          <navbar></navbar>
         </el-col>
         <!-- menu content -->
-        <el-col :span="20"><div class='magin'></div></el-col>
+        <el-col :span="20" class="cms">
+          <div class='per-cms-content'>
+
+          </div>
+        </el-col>
       </el-row>
     </div>
 </template>
@@ -33,8 +37,8 @@ export default {
     }
   },
   components: {
-    'Navbar': Navbar,
-    'Sign': Sign
+    'navbar': Navbar,
+    'sign': Sign
   },
   methods: {
     refresh () {
@@ -43,17 +47,10 @@ export default {
   }
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .paddings {
   padding: 12px;
-}
-.cms-title{
-  background-color: #324157;
-  color: #fff;
-  height: 60px;
-
 }
 .cms-title-left{
   font-size: 24px;
