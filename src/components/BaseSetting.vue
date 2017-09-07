@@ -1,6 +1,6 @@
 <template>
   <div class='full-content'>
-    <el-card class="box-card box-scoll">
+    <el-card class="box-card box-scoll card-border-radius">
       <el-form class='setting-form' label-position='left' label-width="80px" >
         <el-form-item label='系统名称'>
           <el-input class='' placeholder="请输入内容" @change='systemNameChange' :value='appTitle' >

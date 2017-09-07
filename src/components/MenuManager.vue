@@ -22,7 +22,7 @@ export default {
       isArcticleList: true,
       perPageArcticles: 10,
       pagesNum: 1,
-      list: null, // arcticle list
+      list: [], // arcticle list
       currentArcticle: null, // current arcticle to display in ArticleDetial
       tipsContent: '',
       isDialogVisible: false
@@ -34,13 +34,15 @@ export default {
   },
   mounted () {
     this.$api.get('article', null, (errRes) => {
-      console.log(errRes)
+      this.tipsContent = '查询文章出错'
+      this.isDialogVisible = !this.isDialogVisible
     }, (res) => {
       console.log(res)
       this.list = res
     })
   },
   methods: {
+    // Dialog process
     handleClose () {
       this.isDialogVisible = !this.isDialogVisible
     },
@@ -54,8 +56,9 @@ export default {
       })
     },
     // get number of pages
-    calcPages (alist) {
+    getPages (alist) {
       this.pagesNum = Math.ceil(alist.data.total / this.perPageArcticles)
+      console.log(this.pagesNum)
     },
     getArticleByPageNum (num) {
       let params = {
