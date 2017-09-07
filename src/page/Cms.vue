@@ -9,13 +9,12 @@
       <el-row class='cms-content'>
         <!-- menu bar -->
         <el-col :span="4" >
-          <navbar></navbar>
+          <navbar @on-click="getCurrentMenuItem"></navbar>
         </el-col>
         <!-- menu content -->
         <el-col :span="20" class="cms">
-          <div class='per-cms-content'>
-
-          </div>
+          <!-- content of per menu item -->
+          <cms-content :currentMenuItem='navsCurrentItem'></cms-content>
         </el-col>
       </el-row>
     </div>
@@ -24,7 +23,7 @@
 <script>
 import Navbar from '../components/Nav'
 import Sign from '../components/Sign'
-
+import CmsContent from '../components/Content'
 export default {
   name: 'cms',
   props: {
@@ -33,16 +32,21 @@ export default {
   data () {
     return {
       appTitle: 'Congred CMS', // Name of Ap
-      activeIndex: '1'
+      navsCurrentItem: 'baseSetting' // current mene item
     }
   },
   components: {
     'navbar': Navbar,
-    'sign': Sign
+    'sign': Sign,
+    'cms-content': CmsContent
   },
   methods: {
     refresh () {
       window.location.reload()
+    },
+    // click: get current menu item
+    getCurrentMenuItem (item) {
+      this.navsCurrentItem = item
     }
   }
 }

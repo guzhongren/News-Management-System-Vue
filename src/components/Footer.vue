@@ -18,5 +18,7 @@
   .cmsFooter{
     position: absolute;
     bottom: 0px;
+    text-align: center;
+    width: 100%;
   }
 </style>

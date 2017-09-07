@@ -9,10 +9,11 @@
 <script>
 export default {
   name: 'cms',
+  props: ['currentMenuItem'],
   data () {
     return {
       navs: {
-        defaultActive: 'baseSetting',
+        defaultActive: this.currentMenuItem ? this.currentMenuItem : 'baseSetting',
         items: [{
           title: '基本设置',
           index: 'baseSetting',
@@ -35,6 +36,7 @@ export default {
     */
     updatePage (evt) {
       this.navs.defaultActive = evt
+      this.$emit('on-click', this.navs.defaultActive)
     }
   }
 }
