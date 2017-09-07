@@ -10,14 +10,31 @@ export default {
     }
   },
   components: {},
+  created () {
+    this.getLoginState()
+  },
   methods: {
     processLogin (evt) {
-      let cls = evt.target.className
-      if (cls.indexOf('isLoginClass') > 0) {
-        // log out
+      if (this.$utils.getLoginState()) {
+        this.logout()
       } else {
         this.$router.push('/login')
       }
+    },
+    getLoginState () {
+      let userInfo = this.$utils.getLoginState()
+      userInfo ? this.isLogin = true : this.isLogin = false
+    },
+    /**
+    *  logout
+    */
+    logout () {
+      this.$utils.deleteLoginState().then((errRes) => {
+        console.log(errRes)
+      }, (info) => {
+        this.isLogin = false
+        this.$router.push('/login')
+      })
     }
   }
 }

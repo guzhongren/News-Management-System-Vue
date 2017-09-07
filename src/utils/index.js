@@ -14,6 +14,11 @@ export default {
    */
   getLoginState: () => {
     return window.sessionStorage.getItem(KEY)
+  },
+  deleteLoginState: () => {
+    return new Promise((resolve, reject) => {
+      window.sessionStorage.removeItem(KEY) ? resolve({'isDelete': true}) : reject({'isDelete': false})
+    })
   }
 
 }

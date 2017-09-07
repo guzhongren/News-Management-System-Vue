@@ -1,5 +1,4 @@
 <template>
-  <div >
     <div class='cms-title'>
       <el-row>
         <el-col :span="10"><div class='cms-title-left paddings'><span>{{this.appTitle}}</span></div></el-col>
@@ -16,9 +15,6 @@
         <el-col :span="20"><div class='magin'></div></el-col>
       </el-row>
     </div>
-
-
-  </div>
 </template>
 
 <script>

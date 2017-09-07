@@ -1,35 +1,28 @@
 <template>
-  <div class='loginPage'>
-    <el-row>
-      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="12">
-        <el-input placeholder="请输入内容" @change='usernameChange' >
-          <template slot="prepend">用户名</template>
-        </el-input>
-      </el-col>
-      <el-col :span="6"></el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="12">
-        <el-input type='password' placeholder="请输入内容" @change='userPassChange' >
-          <template slot="prepend">密码</template>
-        </el-input>
-      </el-col>
-      <el-col :span="6"></el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="12">
-        <el-button type="primary" :disabled="isLoginBtnDisable" @click='login'>登录</el-button>
-      </el-col>
-      <el-col :span="6"></el-col>
-    </el-row>
+  <div class='login'>
+    <div class='loginPage' >
+      <el-form class='loginForm' label-position='left' label-width="80px" >
+        <!-- <el-form-item label="名称"> -->
+          <el-input class='loginInput' placeholder="请输入内容" @change='usernameChange' >
+            <template slot="prepend">用户名</template>
+          </el-input>
+        <!-- </el-form-item> -->
+        <!-- <el-form-item label="活动区域"> -->
+          <el-input class='loginInput' type='password' placeholder="请输入内容" @change='userPassChange' >
+            <template slot="prepend">密码</template>
+          </el-input>
+        <!-- </el-form-item> -->
+        <!-- <el-form-item label="活动形式"> -->
+          <el-button class='loginBtn' type="primary" :disabled="isLoginBtnDisable" @click='login'>登录</el-button>
+        <!-- </el-form-item> -->
+      </el-form>
+    </div>
+    <cms-footer></cms-footer>
   </div>
 </template>
 
 <script>
-
+import CmsFooter from '../components/Footer'
 export default {
   data () {
     return {
@@ -38,7 +31,9 @@ export default {
       userPass: null
     }
   },
-  components: {},
+  components: {
+    'cms-footer': CmsFooter
+  },
   created: () => {
   },
   methods: {
@@ -51,11 +46,10 @@ export default {
           account: this.username,
           password: this.userPass
         }
-        this.$api.post('login', params, (resp) => {
-          console.log(resp)
-          resp ? this.setUserInfoToGo() : null
-        }, (errObj) => {
+        this.$api.post('login', params, (errObj) => {
           console.log('login error', JSON.stringify(errObj))
+        }, (resp) => {
+          resp && resp.code === 0 ? this.setUserInfoToGo({account: this.username}) : null
         })
       }
     },
@@ -89,11 +83,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .login{
+    height: 100%;
+    width: 100%;
+  }
   .loginPage{
     height: 100%;
-    widows: 100%;
+    width: 100%;
     background-image: linear-gradient(-180deg, #324157 38%, #00DEFF 100%);
     display: flex;
-    align-items: center
+    align-items: center;
+    justify-content: center;
+  }
+  .loginForm{
+    width: 30%;
+  }
+  .loginInput {
+    margin: 10px 0;
+  }
+  .loginBtn {
+    width: 100%;
   }
 </style>
