@@ -8,13 +8,13 @@
       <!-- content -->
       <el-row class='cms-content'>
         <!-- menu bar -->
-        <el-col :span="4" >
+        <el-col :span="4" class='left-bar' >
           <navbar @on-click="getCurrentMenuItem"></navbar>
         </el-col>
         <!-- menu content -->
         <el-col :span="20" class="cms">
           <!-- content of per menu item -->
-          <cms-content :currentMenuItem='navsCurrentItem'></cms-content>
+          <cms-content :currentMenuItem='navsCurrentItem' :systemName='appTitle' @update-systemname='updataSystemName'></cms-content>
         </el-col>
       </el-row>
     </div>
@@ -41,6 +41,9 @@ export default {
     'cms-content': CmsContent
   },
   methods: {
+    updataSystemName (title) {
+      this.appTitle = title
+    },
     refresh () {
       window.location.reload()
     },
@@ -68,5 +71,9 @@ export default {
 }
 .cms-title-right{
   float: right;
+}
+.left-bar{
+  height: 100%;
+  background-color: #eef1f6;
 }
 </style>
