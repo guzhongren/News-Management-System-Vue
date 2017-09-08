@@ -1,7 +1,8 @@
 <template>
   <div class='full-content'>
-    <arcticle-list v-if='isArcticleList' :articleList='list'></arcticle-list>
-    <article-detial v-else></article-detial>
+    <arcticle-list v-if='"LIST" === arcticleType[0]' :articleList='list'></arcticle-list>
+    <article-detial v-else-if= '"DETIAL" === arcticleType[1]'></article-detial>
+    <article-add v-else></article-add>
     <!-- dialog to tips -->
     <el-dialog  title="提示" :visible.sync="isDialogVisible" size="tiny" >
       <span>{{this.tipsContent}}</span>
@@ -16,9 +17,11 @@
 <script>
 import ArcticleList from './ArcticleList'
 import ArticleDetial from './ArticleDetial'
+import ArticleAdd from './ArticlaAdd'
 export default {
   data () {
     return {
+      arcticleType: ['LIST', 'DETIAL', 'ADD'],
       isArcticleList: true,
       perPageArcticles: 10,
       pagesNum: 1,
@@ -30,16 +33,11 @@ export default {
   },
   components: {
     'arcticle-list': ArcticleList,
-    'article-detial': ArticleDetial
+    'article-detial': ArticleDetial,
+    'article-add': ArticleAdd
   },
   mounted () {
-    this.$api.get('article', null, (errRes) => {
-      this.tipsContent = '查询文章出错'
-      this.isDialogVisible = !this.isDialogVisible
-    }, (res) => {
-      console.log(res)
-      this.list = res
-    })
+    this.getArticleInfo()
   },
   methods: {
     // Dialog process
@@ -53,6 +51,7 @@ export default {
         this.isDialogVisible = !this.isDialogVisible
       }, (res) => {
         console.log(res)
+        this.list = res.data
       })
     },
     // get number of pages
