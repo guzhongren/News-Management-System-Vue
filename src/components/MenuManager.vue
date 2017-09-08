@@ -1,6 +1,6 @@
 <template>
   <div class='full-content'>
-    <arcticle-list v-if='"LIST" === arcticleType[0]' :articleList='list'></arcticle-list>
+    <arcticle-list v-if='"LIST" === arcticleType[0]' ></arcticle-list>
     <article-detial v-else-if= '"DETIAL" === arcticleType[1]'></article-detial>
     <article-add v-else></article-add>
     <!-- dialog to tips -->
@@ -37,7 +37,7 @@ export default {
     'article-add': ArticleAdd
   },
   mounted () {
-    this.getArticleInfo()
+    // this.getArticleInfo()
   },
   methods: {
     // Dialog process

@@ -1,6 +1,6 @@
 <template>
   <div class='menu-bar'>
-    <el-menu mode="vertical" :default-active='navs.defaultActive' @select='updatePage' class="el-menu-vertical-demo" v-for='nav in navs.items' key='nav.index'>
+    <el-menu mode="vertical" theme="dark" :default-active='navs.defaultActive' @select='updatePage' class="el-menu-vertical-demo" v-for='nav in navs.items' key='nav.index'>
       <el-menu-item :id='nav.index' :index='nav.index'><i :class='nav.icon'></i>{{nav.title}}</el-menu-item>
     </el-menu>
   </div>
@@ -45,6 +45,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .menu-bar{
-  
+
 }
 </style>

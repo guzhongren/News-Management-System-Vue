@@ -74,6 +74,6 @@ export default {
 }
 .left-bar{
   height: 100%;
-  background-color: #eef1f6;
+  background-color: #324157;
 }
 </style>

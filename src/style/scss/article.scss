@@ -1,0 +1,41 @@
+$height: 35px;
+$base-color: #bfcbd9;
+.articleTools {
+  height: 30px;
+  line-height: 30px;
+  float: right;
+  margin-right: 20px
+}
+.channelTools {
+  height: $height;
+  border-bottom: 1px solid #{$base-color};
+}
+.channelContent{
+  height: calc(100% - #{$height});
+  margin-top: $height;
+  font-size: 12px;
+  .el-col-5 {
+    border-right: 1px solid #{$base-color};
+    height: 100%;
+  }
+  .el-col-19 {
+    height: 100%;
+  }
+}
+.channelMenu{
+  border: 1px solid #eef1f6;
+  height: 30px;
+  line-height: 30px;
+  background-color: #dfe6ec;
+  padding-left: 5px;
+  cursor: pointer;
+}
+.channelMenu:hover{
+  background-color: #fbfdff;
+}
+.channelMenu:focus,{
+  background-color: #fbfdff;
+}
+.channelMenu:active{
+  background-color: #fbfdff;
+}
