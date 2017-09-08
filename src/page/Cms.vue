@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      appTitle: 'Congred CMS', // Name of Ap
+      appTitle: 'Congred Cms', // Name of Ap
       navsCurrentItem: 'baseSetting' // current mene item
     }
   },

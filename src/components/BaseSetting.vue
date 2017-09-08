@@ -11,7 +11,7 @@
           </el-input>
         </el-form-item> -->
         <!-- <el-form-item label="活动形式"> -->
-          <el-button @click='certainUpdate' class='certainBtn' type="primary">确认更新</el-button>
+          <el-button @click='certainUpdate' class='certainBtn' type="primary"><i class="fa fa-check-circle-o fa-1x" aria-hidden="true"></i>确认更新</el-button>
         <!-- </el-form-item> -->
       </el-form>
     </el-card>
