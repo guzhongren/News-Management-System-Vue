@@ -33,7 +33,8 @@
       }
     },
     methods: {
-      readArticle () {
+      readArticle (evt) {
+        evt ? this.$emit('read-article', evt.target.id) : null
       },
       editArticle (evt) {
         evt ? this.$emit('edit-article', evt.target.id) : null

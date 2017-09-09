@@ -48,6 +48,7 @@ $base-color: #bfcbd9;
   border: 1px solid #dfe6ec;
   border-radius: 3px;
   height: 35px;
+
   margin: 5px;
   padding-left: 10px;
   line-height: 35px;
@@ -77,4 +78,26 @@ $base-color: #bfcbd9;
 .info-func:hover {
   opacity: 1;
   transition: all 0.3 ease 0.1;
+}
+// articleReader
+.atc{
+  width: 100%;
+  height: 100%;
+  .articleHeader{
+    text-align: center;
+    border-bottom: 1px solid $base-color;
+    h4{
+      margin-top: 0;
+    }
+  }
+  .arcticleBody{
+    margin: 10px;
+  }
+  .articleFooter{
+    border-top: 1px solid $base-color;
+    text-align: center;
+    div{
+      margin-top: 10px
+    }
+  }
 }

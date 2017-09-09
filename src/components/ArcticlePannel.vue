@@ -32,14 +32,15 @@
       <el-col :span="19" class=''>
         <!-- article list-->
         <div v-if='currentArticleStatus === articleStatus[0]'>
-          <article-list ref='articleList' :channelId='channelId' :page='currentArticlePage' v-on:edit-article='editArticle'></article-list>
+          <article-list ref='articleList' :channelId='channelId' :page='currentArticlePage' v-on:edit-article='editArticle' v-on:read-article='readArticle'></article-list>
         </div>
         <!-- add article -->
         <div v-if='currentArticleStatus === articleStatus[1]'>
           <article-editor :channelId='channelId' v-on:cancleArticle='cancleArticleOption' v-on:submit-article='submitArticle'></article-editor>
         </div>
         <!-- read article -->
-        <div v-if='currentArticleStatus === articleStatus[2]'>
+        <div v-if='currentArticleStatus === articleStatus[2]' class='' id='read'>
+          <article-reader :articleId='currentArcticleId'></article-reader>
         </div>
         <!-- eidt article -->
         <div v-if='currentArticleStatus === articleStatus[3]'>
@@ -66,11 +67,13 @@
 <script>
 import ArticleList from './ArticleList'
 import ArticleEditor from './ArticleEditor'
+import ArticleReader from './ArticleReader'
 export default {
   // props: ['articleList'],
   components: {
     'article-list': ArticleList,
-    'article-editor': ArticleEditor
+    'article-editor': ArticleEditor,
+    'article-reader': ArticleReader
   },
   data () {
     return {
@@ -101,6 +104,10 @@ export default {
   unmount () {
   },
   methods: {
+    readArticle (atcId) {
+      this.currentArcticleId = atcId
+      this.currentArticleStatus = this.articleStatus[2]
+    },
     submitEditedArticle (msg) {
       this.currentArticleStatus = this.articleStatus[0]
     },
