@@ -1,7 +1,7 @@
 <template>
     <div class='cms'>
       <el-row class="cms-title">
-        <el-col :span="10"><div class='cms-title-left paddings'><span>{{this.appTitle}}</span></div></el-col>
+        <el-col :span="10"><div class='cms-title-left paddings'><span>{{siteinfo.name}}</span></div></el-col>
         <el-col :span="11"><div class='paddings'></div></el-col>
         <el-col :span="3"><div class='paddings'><sign ></sign></div></el-col>
       </el-row>
@@ -14,7 +14,7 @@
         <!-- menu content -->
         <el-col :span="20" class="cms">
           <!-- content of per menu item -->
-          <cms-content :currentMenuItem='navsCurrentItem' :systemName='appTitle' @update-systemname='updataSystemName'></cms-content>
+          <cms-content :currentMenuItem='navsCurrentItem' :systemName='siteinfo.name' @update-system-info='updataSiteInfo'></cms-content>
         </el-col>
       </el-row>
     </div>
@@ -29,9 +29,20 @@ export default {
   props: {
     // clickMenu:
   },
+  // created () {
+  //   this.getSiteInfo(this.$compUtils.setSiteInfo)
+  // },
+  mounted () {
+    this.getSiteInfo(this.$compUtils.setSiteInfo)
+  },
   data () {
     return {
-      appTitle: 'Congred Cms', // Name of Ap
+      siteinfo: {
+        name: '',
+        title: '',
+        logo: '',
+        copyright: ''
+      },
       navsCurrentItem: 'baseSetting' // current mene item
     }
   },
@@ -41,15 +52,27 @@ export default {
     'cms-content': CmsContent
   },
   methods: {
-    updataSystemName (title) {
-      this.appTitle = title
-    },
     refresh () {
       window.location.reload()
     },
     // click: get current menu item
     getCurrentMenuItem (item) {
       this.navsCurrentItem = item
+    },
+    updataSiteInfo (siteInfo) {
+      this.siteinfo = siteInfo
+      this.$compUtils.setSiteInfo(this.siteinfo)
+    },
+    getSiteInfo () {
+      let _self = this
+      _self.$api.get('site', null, (er) => {}, (res) => {
+        res.code === 0 ? this.siteinfo = res.data : null
+      })
+    }
+  },
+  watch: {
+    'siteinfo': function (val, old) {
+      val === old ? null : this.siteinfo = val
     }
   }
 }

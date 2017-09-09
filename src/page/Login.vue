@@ -17,7 +17,7 @@
         <!-- </el-form-item> -->
       </el-form>
     </div>
-    <cms-footer></cms-footer>
+    <cms-footer :siteInfo='siteinfo'></cms-footer>
   </div>
 </template>
 
@@ -28,13 +28,20 @@ export default {
     return {
       isLoginBtnDisable: true,
       username: null,
-      userPass: null
+      userPass: null,
+      siteinfo: {
+        name: '',
+        title: '',
+        logo: '',
+        copyright: ''
+      }
     }
   },
   components: {
     'cms-footer': CmsFooter
   },
-  created: () => {
+  created () {
+    this.getSiteInfo()
   },
   methods: {
     refresh () {
@@ -76,6 +83,12 @@ export default {
         this.userPass = null
         this.isLoginBtnDisable = true
       }
+    },
+    getSiteInfo () {
+      let _self = this
+      _self.$api.get('site', null, (er) => {}, (res) => {
+        res.code === 0 ? _self.siteinfo = res.data && _self.$compUtils.setSiteInfo(res.data) : null
+      })
     }
   }
 }

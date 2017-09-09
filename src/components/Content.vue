@@ -1,7 +1,7 @@
 <template>
   <div class='per-cms-content'>
     <!-- display per content -->
-    <base-setting :systemName='appTitle' @update-systemname-content='updataSystemName' v-if='"baseSetting" === currentmenu'></base-setting>
+    <base-setting @update-systemname-content='updataSystemName' v-if='"baseSetting" === currentmenu'></base-setting>
     <menu-manager v-else-if='"menuManager" === currentmenu'></menu-manager>
     <user-manager v-else='"UserManager" === currentmenu'></user-manager>
   </div>
@@ -25,14 +25,19 @@ export default {
   data () {
     return {
       currentmenu: this.currentMenuItem ? this.currentMenuItem : 'baseSetting',
-      appTitle: this.systemName
+      siteinfo: {
+        name: '',
+        title: '',
+        logo: '',
+        copyright: ''
+      }
     }
   },
   methods: {
     // update system once
-    updataSystemName (title) {
-      this.appTitle = title
-      this.$emit('update-systemname', this.appTitle)
+    updataSystemName (newSiteInfo) {
+      this.siteinfo = newSiteInfo
+      this.$emit('update-system-info', this.siteinfo)
     },
     getCurrentMenuItem () {
     }

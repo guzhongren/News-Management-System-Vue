@@ -11,6 +11,8 @@ Vue.prototype.$api = api
 import utils from './utils'
 Vue.prototype.$utils = utils
 Vue.config.productionTip = false
+import compUtils from './components/componetUtils'
+Vue.prototype.$compUtils = compUtils
 
 /* eslint-disable no-new */
 new Vue({
