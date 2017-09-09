@@ -18,12 +18,17 @@ export default {
       if (this.$utils.getLoginState()) {
         this.logout()
       } else {
-        this.$router.push('/login')
+        this.$router.push('/')
       }
     },
     getLoginState () {
       let userInfo = this.$utils.getLoginState()
-      userInfo ? this.isLogin = true : this.isLogin = false
+      if (userInfo) {
+        this.isLogin = true
+      } else {
+        this.isLogin = false
+        this.$router.push('/')
+      }
     },
     /**
     *  logout
@@ -33,7 +38,7 @@ export default {
         console.log(errRes)
       }, (info) => {
         this.isLogin = false
-        this.$router.push('/login')
+        this.$router.push('/')
       })
     }
   }

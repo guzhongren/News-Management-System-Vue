@@ -33,9 +33,35 @@ $base-color: #bfcbd9;
 .channelMenu:hover{
   background-color: #fbfdff;
 }
-.channelMenu:focus,{
-  background-color: #fbfdff;
-}
 .channelMenu:active{
-  background-color: #fbfdff;
+  background-color: rgba(0,0,0,.04);
+}
+.scrollFeature{
+  overflow: hidden;
+  height: 100%;
+}
+.scrollChilder{
+  overflow-y: scroll;
+  height: 100%;
+}
+.artcleInfo{
+  border: 1px solid #dfe6ec;
+  border-radius: 3px;
+  height: 35px;
+  margin: 5px;
+  padding-left: 10px;
+  line-height: 35px;
+  overflow: hidden
+  /*display: flex;
+  align-items: center;*/
+}
+.artcleInfo:hover{
+  background-color: #dfe6ec;
+}
+.channelDelete{
+  opacity: 0;
+  transition: all 0.4 ease;
+}
+.channelDelete:hover{
+  opacity: 1;
 }

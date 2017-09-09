@@ -1,49 +1,37 @@
 <template>
-  <!-- <el-card class="full-content card-border-radius"> -->
-    <!-- <div slot="header" class="clearfix">
-      <span style="line-height: 36px;">文章列表</span>
-      <el-button style="float: right;" type="primary" @click='addChannle'>新增栏目</el-button>
-    </div> -->
-  <!-- <el-collapse :activeName='activeCollapseName' accordion>
-    <el-collapse-item v-if='list' v-for='item in list' :key='item.channel_id' :title="item.channel_name" :name="item.channel_name">
-      <div class='artcleInfo' v-for='lis in item.list' :key='lis.id'>
-        <el-row :gutter="20">
-        <el-col :span="21">
-          <span>{{lis.title.length > 20 ?lis.title.slice(0,20)+'...' : lis.title.slice(0,20)}}</span>
-        </el-col>
-        <el-col :span="3">
-          <span class='info-func'>
-            <i :id='lis.id' class="icon-padding-right fa fa-eye icon-padding-right" aria-hidden="true"></i>
-            <i :id='lis.id' class="fa fa-pencil-square-o icon-padding-right" aria-hidden="true"></i>
-            <i :id='lis.id' class="fa fa-trash-o icon-padding-right" aria-hidden="true"></i>
-          </span>
-        </el-col>
-      </el-row>
-      </div>
-    </el-collapse-item>
-  </el-collapse> -->
   <el-row class='full-content'>
-    <!-- <el-col :span="4" class=''>
-      <div class=''>Articles</div>
-    </el-col> -->
     <el-col :span="24" class='channelTools'>
       <div class='articleTools'>
-        <el-button size="small" type="primary">添加栏目</el-button>
+        <el-button size="small" type="primary" @click='addChannel'>添加栏目</el-button>
         <el-button  size="small" type="primary">添加文章</el-button>
       </div>
     </el-col>
     <el-row class='channelContent'>
-      <el-col :span="5" class=''>
+      <el-col :span="5" class='scrollFeature'>
         <!-- menu -->
-        <div v-if='channelList'>
-          <div v-for='item in channelList.list' :key='item.id' :id='item.id' class='channelMenu' @click='getArticles'>
-            <i class="icon-padding-right fa fa-bookmark" aria-hidden="true"></i>{{item.name}}
+        <div v-if='channelList' class='scrollChilder'>
+          <div v-for='item in channelList.list' :key='item.id' :id='item.id' class='channelMenu' @click='clickMenu'>
+            <el-row>
+              <el-col :span="2" :id='item.id'>
+                <i class="icon-padding-right fa fa-bookmark" aria-hidden="true"></i>
+              </el-col>
+              <el-col :span="18" :id='item.id'>
+                <span :id='item.id'>{{item.name}}</span>
+              </el-col>
+              <el-col :span="4" :id='item.id'>
+                <span class='channelDelete' >
+                  <i :id='item.id + "_" + item.name' class="icon-padding-right fa fa-pencil" aria-hidden="true" @click='editChnnel'></i>
+                  <i :id='item.id' class="icon-padding-right fa fa-trash-o" aria-hidden="true" @click='deleteChannel'></i>
+                </span>
+              </el-col>
+            </el-row>
+
           </div>
         </div>
       </el-col>
       <el-col :span="19" class=''>
         <!-- article list-->
-        <div v-if='articleList.length > 0'>
+        <div v-if='articleList'>
           <div class='artcleInfo' v-for='list in articleList.list' :key='list.id'>
             <el-row :gutter="20">
             <el-col :span="21">
@@ -52,8 +40,8 @@
             <el-col :span="3">
               <span class='info-func'>
                 <i :id='list.id' class="icon-padding-right fa fa-eye icon-padding-right" aria-hidden="true"></i>
-                <i :id='list.id' class="fa fa-pencil-square-o icon-padding-right" aria-hidden="true"></i>
-                <i :id='list.id' class="fa fa-trash-o icon-padding-right" aria-hidden="true"></i>
+                <i :id='list.id' class="icon-padding-right fa fa-pencil-square-o icon-padding-right" aria-hidden="true"></i>
+                <i :id='list.id' class="icon-padding-right fa fa-trash-o icon-padding-right" aria-hidden="true"></i>
               </span>
             </el-col>
           </el-row>
@@ -63,10 +51,15 @@
     </el-row>
     <!-- dialog -->
     <el-dialog  :title='dialogTitle' :visible.sync="isDialogVisible" size="tiny" >
-      <span>{{dialogContent}}</span>
+      <div v-if='dialogStatus[0] === currentDialogStatus'>
+        <el-input placeholder="请输入栏目标题" @change='getChannelName'>{{channelTitleToAdd}}</el-input>
+      </div>
+      <div v-else='dialogStatus[1] === currentDialogStatus'>
+        <el-input placeholder="请输入栏目标题" @change='getChannelName' v-model='channelTitleToAdd'>{{channelTitleToAdd}}</el-input>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click='handleClose'>取 消</el-button>
-        <el-button type="primary" @click='handleClose'>确 定</el-button>
+        <el-button type="primary" @click='handleOk'>确 定</el-button>
       </span>
     </el-dialog>
   </el-row>
@@ -82,11 +75,16 @@
         activeCollapseName: null, // string
         dialogTitle: '提示',
         dialogContent: 'ccccc',
-        channelList: null
+        channelList: null,
+        channelId: 1,
+        channelPage: 1,
+        dialogStatus: ['ADDCHANNEL', 'EDITCHANNEL', 'DELETECHANNEL', 'ADDDARTICLE', 'DELETEARTICLE'],
+        currentDialogStatus: '',
+        channelTitleToAdd: '' // [add edit]
       }
     },
     created () {
-      this.getChannellist(this.getArticles)
+      this.getChannellist(this.channelPage, this.getArticles)
     },
     mounted () {
       console.log(this.articleList)
@@ -94,38 +92,61 @@
     unmount () {
     },
     methods: {
-      getArticles (evt, id) {
-        let channelId = evt.target.id ? evt.target.id : id
-        if (channelId) {
-          let params = {
-            channel_id: channelId
-          }
-          this.$api.get('article', params, (errRes) => {}, (res) => {
-            if (res && res.code === 0) {
-              this.articleList = res
-            } else {
-            }
-          })
-        } else {
-          this.$api.get('article', null, (errRes) => {}, (res) => {
-            if (res && res.code === 0) {
-              this.articleList = res
-            } else {
-            }
-          })
-        }
+      editChnnel (evt) {
+        evt.stopPropagation()
+        let tempInfo = evt.target.id.split('_')
+        this.channelTitleToAdd = tempInfo[1]
+        this.channelId = tempInfo[0]
+        tempInfo = null
+        this.dialogTitle = '编辑栏目'
+        this.currentDialogStatus = this.dialogStatus[1]
+        this.isDialogVisible = true
       },
-      getChannellist (callback) {
-        this.$api.get('channel', null, (errr) => {
+      getChannelName (evt) {
+        evt ? this.channelTitleToAdd = evt : null
+      },
+      addChannel () {
+        this.dialogTitle = '添加栏目'
+        this.currentDialogStatus = this.dialogStatus[0]
+        this.isDialogVisible = true
+      },
+      clickMenu (evt) {
+        // let channelId = evt.target.id
+        console.log('click', evt)
+        this.channelId = evt.target.id
+        this.getArticles(this.channelId, this.channelPage)
+      },
+      getArticles (channelId, page) {
+        let params = {}
+        channelId ? params['channel_id'] = channelId : params['channel_id'] = this.channelId
+        page ? params['page'] = page : params['page'] = this.channelPage
+        this.$api.get('article', params, (errRes) => {}, (res) => {
+          if (res && res.code === 0) {
+            this.articleList = res.data
+          } else {
+            this.articleList = null
+          }
+        })
+      },
+      getChannellist (channelPage, callback) {
+        let _self = this
+        this.channelPage = channelPage
+        let params = {
+          page: this.channelPage
+        }
+        this.$api.get('channel', params, (errr) => {
           console.log(errr)
         }, (res) => {
           if (res.code === 0) {
-            this.channelList = res.data
-            callback ? callback(this.channelList[0].id) : null
+            _self.channelList = res.data
+            callback ? callback(_self.channelList.list[0].id, _self.channelPage) : null
+            // if (callback) {
+            //   callback.call(_self, _self.channelList.list[0].id, _self.channelPage)
+            // }
           } else {
-            this.dialogContent = '查询出错'
-            this.dialogTitle = 'Error'
-            this.isDialogVisible = true
+            _self.dialogContent = '查询出错'
+            _self.dialogTitle = 'Error'
+            _self.isDialogVisible = true
           }
         })
       },
@@ -165,18 +186,51 @@
         }
         return reAList
       },
+      // ops...
       displaylist (aList) {
         // this.list = this.constructMenu(aList)
         // console.log(this.list)
         // this.activeCollapseName = this.list[0].channel_name
-
+      },
+      deleteChannel (evt) {
+        let _self = this
+        evt.stopPropagation()
+        let delChannelId = evt.target.id
+        _self.$api.delete('channel/' + delChannelId, null, (er) => {}, (res) => {
+          if (res.code === 0) {
+            _self.getChannellist(this.channelPage, this.getArticles)
+          }
+        })
       },
       // add channel
       addChannle () {
         this.isDialogVisible = !this.isDialogVisible
       },
+      handleOk () {
+        let _self = this
+        if (_self.channelTitleToAdd && _self.dialogStatus[0] === _self.currentDialogStatus) {
+          let params = {
+            name: _self.channelTitleToAdd
+          }
+          _self.$api.post('channel', params, (er) => {}, (res) => {
+            if (res.code === 0) {
+              _self.getChannellist(this.channelPage, this.getArticles)
+              this.isDialogVisible = false
+            }
+          })
+        } else if (_self.channelTitleToAdd && _self.dialogStatus[1] === _self.currentDialogStatus) {
+          let params = {
+            name: this.channelTitleToAdd
+          }
+          _self.$api.put('channel/' + _self.channelId, params, (er) => {}, (res) => {
+            if (res.code === 0) {
+              _self.getChannellist(this.channelPage, this.getArticles)
+            }
+          })
+        }
+      },
       handleClose () {
-        this.isDialogVisible = !this.isDialogVisible
+        this.isDialogVisible = false
       }
     },
     watch: {
@@ -189,17 +243,7 @@
   }
 </script>
 <style scoped>
-  .artcleInfo{
-    border: 1px solid #dfe6ec;
-    border-radius: 3px;
-    height: 35px;
-    margin: 5px auto;
-    padding-left: 10px;
-    line-height: 35px;
-    overflow: hidden
-    /*display: flex;
-    align-items: center;*/
-  }
+
   .info-func{
     opacity: 0;
     float: right;
