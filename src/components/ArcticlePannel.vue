@@ -32,33 +32,18 @@
       <el-col :span="19" class=''>
         <!-- article list-->
         <div v-if='currentArticleStatus === articleStatus[0]'>
-          <div v-if='articleList'>
-            <div class='artcleInfo' v-for='list in articleList.list' :key='list.id'>
-              <el-row :gutter="20">
-              <el-col :span="21">
-                <span>{{list.title.length > 20 ? list.title.slice(0,20)+'...' : list.title.slice(0,20)}}</span>
-              </el-col>
-              <el-col :span="3">
-                <span class='info-func'>
-                  <i :id='list.id' @click='readArticle' class="icon-padding-right fa fa-eye icon-padding-right" aria-hidden="true"></i>
-                  <i :id='list.id' @click='editArticle' class="icon-padding-right fa fa-pencil-square-o icon-padding-right" aria-hidden="true"></i>
-                  <i :id='list.id' @click='deleteArticle' class="icon-padding-right fa fa-trash-o icon-padding-right" aria-hidden="true"></i>
-                </span>
-              </el-col>
-            </el-row>
-            </div>
-          </div>
+          <article-list ref='articleList' :channelId='channelId' :page='currentArticlePage' v-on:edit-article='editArticle'></article-list>
         </div>
         <!-- add article -->
         <div v-if='currentArticleStatus === articleStatus[1]'>
-            <article-editor :channelId='channelId' v-on:cancleArticle='cancleArticleOption' v-on:submit-article='submitArticle'></article-editor>
+          <article-editor :channelId='channelId' v-on:cancleArticle='cancleArticleOption' v-on:submit-article='submitArticle'></article-editor>
         </div>
         <!-- read article -->
         <div v-if='currentArticleStatus === articleStatus[2]'>
         </div>
         <!-- eidt article -->
         <div v-if='currentArticleStatus === articleStatus[3]'>
-            <article-editor :channelId='channelId' v-on:cancleArticle='cancleArticleOption' v-on:submit-article='submitArticle'></article-editor>
+          <article-editor :channelId='channelId' :articleId='currentArcticleId' v-on:cancleArticle='cancleArticleOption' v-on:sbumit-edited-article='submitEditedArticle'></article-editor>
         </div>
       </el-col>
     </el-row>
@@ -79,16 +64,20 @@
 <!-- </el-card> -->
 </template>
 <script>
-import ArticleEditor from './Article'
+import ArticleList from './ArticleList'
+import ArticleEditor from './ArticleEditor'
 export default {
   // props: ['articleList'],
   components: {
+    'article-list': ArticleList,
     'article-editor': ArticleEditor
   },
   data () {
     return {
       articleList: [],
       articleStatus: ['DISPLAY', 'ADD', 'READ', 'EDIT'],
+      currentArticlePage: 1,
+      currentArcticleId: null,
       currentArticleStatus: '',
       isDialogVisible: false,
       activeCollapseName: null, // string
@@ -103,7 +92,7 @@ export default {
     }
   },
   created () {
-    this.getChannellist(this.channelPage, this.getArticles)
+    this.getChannellist(this.channelPage)
   },
   mounted () {
     // console.log(this.articleList)
@@ -112,14 +101,20 @@ export default {
   unmount () {
   },
   methods: {
+    submitEditedArticle (msg) {
+      this.currentArticleStatus = this.articleStatus[0]
+    },
+    editArticle (aId) {
+      this.currentArticleStatus = this.articleStatus[3]
+      this.currentArcticleId = aId
+    },
     cancleArticleOption (msg) {
       console.log(msg)
       this.currentArticleStatus = this.articleStatus[0]
     },
     submitArticle (msg) {
-      console.log(msg)
-      if (msg) {
-        this.getArticles(this.channelId, this.channelPage)
+      // console.log(msg)
+      if (this.articleStatus[1] === msg) {
         this.currentArticleStatus = this.articleStatus[0]
       }
     },
@@ -148,7 +143,8 @@ export default {
       // let channelId = evt.target.id
       this.currentArticleStatus = this.articleStatus[0]
       this.channelId = evt.target.id
-      this.getArticles(this.channelId, this.channelPage)
+      // console.log('click', this.currentArticleStatus, this.channelId, this.channelPage)
+      // this.getArticles(this.channelId, this.channelPage)
     },
     getArticles (channelId, page) {
       let params = {}
@@ -173,6 +169,7 @@ export default {
       }, (res) => {
         if (res.code === 0) {
           _self.channelList = res.data
+          _self.channelId = _self.channelList.list[0].id
           callback ? callback(_self.channelList.list[0].id, _self.channelPage) : null
           // if (callback) {
           //   callback.call(_self, _self.channelList.list[0].id, _self.channelPage)
@@ -232,7 +229,7 @@ export default {
       let delChannelId = evt.target.id
       _self.$api.delete('channel/' + delChannelId, null, (er) => {}, (res) => {
         if (res.code === 0) {
-          _self.getChannellist(this.channelPage, this.getArticles)
+          _self.getChannellist(this.channelPage)
         }
       })
     },
@@ -248,17 +245,17 @@ export default {
         }
         _self.$api.post('channel', params, (er) => {}, (res) => {
           if (res.code === 0) {
-            _self.getChannellist(this.channelPage, this.getArticles)
+            _self.getChannellist(this.channelPage)
             _self.handleClose()
           }
         })
-      } else if (_self.channelTitleToAdd && _self.dialogStatus[1] === _self.currentDialogStatus) {
+      } else if (_self.channelTitleToAdd && _self.dialogStatus[1] === _self.currentDialogStatus) { // edit
         let params = {
           name: this.channelTitleToAdd
         }
         _self.$api.put('channel/' + _self.channelId, params, (er) => {}, (res) => {
           if (res.code === 0) {
-            _self.getChannellist(this.channelPage, this.getArticles)
+            _self.getChannellist(this.channelPage)
             _self.handleClose()
           }
         })
@@ -278,14 +275,4 @@ export default {
 }
 </script>
 <style scoped>
-
-  .info-func{
-    opacity: 0;
-    float: right;
-  }
-  .info-func:hover {
-    opacity: 1;
-    transition: all 0.3 ease 0.1;
-  }
-
 </style>

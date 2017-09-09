@@ -70,3 +70,11 @@ $base-color: #bfcbd9;
   width: 80%;
   text-align: center;
 }
+.info-func{
+  opacity: 0;
+  float: right;
+}
+.info-func:hover {
+  opacity: 1;
+  transition: all 0.3 ease 0.1;
+}

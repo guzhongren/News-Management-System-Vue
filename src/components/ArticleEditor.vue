@@ -42,8 +42,10 @@ export default {
     this.getCurrentUserInfo()
     this.willAddArticle.channel_id = parseInt(this.channelId)
   },
-  mount () {
-    console.log(this.channelId)
+  mounted () {
+    if (this.articleId) {
+      this.getArticleById(this.articleId)
+    }
   },
   beforeDestroy () {
     this.willEditArticleId = null
@@ -67,10 +69,14 @@ export default {
   methods: {
     // 提交修改后的文章
     updateArticle () {
+      this.$api.put('article/' + this.articleId, this.willAddArticle, (er) => {}, (res) => {
+        res.code === 0 ? this.$emit('sbumit-edited-article', 'EDIT') : null
+      })
     },
     addArticle () {
+      console.log('will added', this.willAddArticle)
       this.$api.post('article', this.willAddArticle, (er) => {}, (res) => {
-        res.code === 0 ? this.$emit('submit-article', true) : null
+        res.code === 0 ? this.$emit('submit-article', 'ADD') : null
       })
     },
     // 处理上传图片
@@ -95,9 +101,17 @@ export default {
     },
     getCurrentUserInfo () {
       this.currentUser = JSON.parse(this.$utils.getLoginState())
+    },
+    getArticleById (articleId, callback) {
+      let _self = this
+      _self.$api.get('article/' + articleId, null, (er) => {}, (res) => {
+        console.log('get', res.data)
+        _self.willAddArticle = res.data
+        callback ? callback.call(_self, _self.willAddArticle) : null
+      })
     }
   }
 }
 </script>
-<style >
+<style scoped>
 </style>
