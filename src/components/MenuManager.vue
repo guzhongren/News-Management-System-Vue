@@ -1,8 +1,6 @@
 <template>
   <div class='full-content'>
-    <arcticle-list v-if='"LIST" === arcticleType[0]' ></arcticle-list>
-    <article-detial v-else-if= '"DETIAL" === arcticleType[1]'></article-detial>
-    <article-add v-else></article-add>
+    <arcticle-pannel ></arcticle-pannel>
     <!-- dialog to tips -->
     <el-dialog  title="提示" :visible.sync="isDialogVisible" size="tiny" >
       <span>{{this.tipsContent}}</span>
@@ -15,13 +13,10 @@
   </div>
 </template>
 <script>
-import ArcticleList from './ArcticleList'
-import ArticleDetial from './ArticleDetial'
-import ArticleAdd from './ArticlaAdd'
+import ArcticlePannel from './ArcticlePannel'
 export default {
   data () {
     return {
-      arcticleType: ['LIST', 'DETIAL', 'ADD'],
       isArcticleList: true,
       perPageArcticles: 10,
       pagesNum: 1,
@@ -32,9 +27,7 @@ export default {
     }
   },
   components: {
-    'arcticle-list': ArcticleList,
-    'article-detial': ArticleDetial,
-    'article-add': ArticleAdd
+    'arcticle-pannel': ArcticlePannel
   },
   mounted () {
     // this.getArticleInfo()

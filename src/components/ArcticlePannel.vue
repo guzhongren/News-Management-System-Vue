@@ -40,9 +40,9 @@
               </el-col>
               <el-col :span="3">
                 <span class='info-func'>
-                  <i :id='list.id' class="icon-padding-right fa fa-eye icon-padding-right" aria-hidden="true"></i>
-                  <i :id='list.id' class="icon-padding-right fa fa-pencil-square-o icon-padding-right" aria-hidden="true"></i>
-                  <i :id='list.id' class="icon-padding-right fa fa-trash-o icon-padding-right" aria-hidden="true"></i>
+                  <i :id='list.id' @click='readArticle' class="icon-padding-right fa fa-eye icon-padding-right" aria-hidden="true"></i>
+                  <i :id='list.id' @click='editArticle' class="icon-padding-right fa fa-pencil-square-o icon-padding-right" aria-hidden="true"></i>
+                  <i :id='list.id' @click='deleteArticle' class="icon-padding-right fa fa-trash-o icon-padding-right" aria-hidden="true"></i>
                 </span>
               </el-col>
             </el-row>
@@ -51,11 +51,13 @@
         </div>
         <!-- add article -->
         <div v-if='currentArticleStatus === articleStatus[1]'>
-            <!-- <el-row>
-              <el-col :span="2"><div style='width: 100%;'></div></el-col>
-              <el-col :span="20">师大</el-col>
-              <el-col :span="2">sdf</el-col>
-            </el-row> -->
+            <article-editor :channelId='channelId' v-on:cancleArticle='cancleArticleOption' v-on:submit-article='submitArticle'></article-editor>
+        </div>
+        <!-- read article -->
+        <div v-if='currentArticleStatus === articleStatus[2]'>
+        </div>
+        <!-- eidt article -->
+        <div v-if='currentArticleStatus === articleStatus[3]'>
             <article-editor :channelId='channelId' v-on:cancleArticle='cancleArticleOption' v-on:submit-article='submitArticle'></article-editor>
         </div>
       </el-col>
@@ -86,7 +88,7 @@ export default {
   data () {
     return {
       articleList: [],
-      articleStatus: ['DISPLAY', 'ADD', 'EDIT'],
+      articleStatus: ['DISPLAY', 'ADD', 'READ', 'EDIT'],
       currentArticleStatus: '',
       isDialogVisible: false,
       activeCollapseName: null, // string
