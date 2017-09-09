@@ -32,7 +32,7 @@
       <el-col :span="19" class=''>
         <!-- article list-->
         <div v-if='currentArticleStatus === articleStatus[0]'>
-          <article-list ref='articleList' :channelId='channelId' :page='currentArticlePage' v-on:edit-article='editArticle' v-on:read-article='readArticle'></article-list>
+          <article-list ref='articleList' :update='isRefresh' :channelId='channelId' :page='currentArticlePage' v-on:edit-article='editArticle' v-on:read-article='readArticle' v-on:delete-article='deleteArticle'></article-list>
         </div>
         <!-- add article -->
         <div v-if='currentArticleStatus === articleStatus[1]'>
@@ -40,11 +40,11 @@
         </div>
         <!-- read article -->
         <div v-if='currentArticleStatus === articleStatus[2]' class='' id='read'>
-          <article-reader :articleId='currentArcticleId'></article-reader>
+          <article-reader :articleId='currentArticleId'></article-reader>
         </div>
         <!-- eidt article -->
         <div v-if='currentArticleStatus === articleStatus[3]'>
-          <article-editor :channelId='channelId' :articleId='currentArcticleId' v-on:cancleArticle='cancleArticleOption' v-on:sbumit-edited-article='submitEditedArticle'></article-editor>
+          <article-editor :channelId='channelId' :articleId='currentArticleId' v-on:cancleArticle='cancleArticleOption' v-on:sbumit-edited-article='submitEditedArticle'></article-editor>
         </div>
       </el-col>
     </el-row>
@@ -53,8 +53,11 @@
       <div v-if='dialogStatus[0] === currentDialogStatus'>
         <el-input placeholder="请输入栏目标题" @change='getChannelName'>{{channelTitleToAdd}}</el-input>
       </div>
-      <div v-else='dialogStatus[1] === currentDialogStatus'>
+      <div v-else-if='dialogStatus[1] === currentDialogStatus'>
         <el-input placeholder="请输入栏目标题" @change='getChannelName' v-model='channelTitleToAdd'>{{channelTitleToAdd}}</el-input>
+      </div>
+      <div v-else='dialogStatus[2] === currentDialogStatus'>
+        <h3>确定要删除么？</h3>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click='handleClose'>取 消</el-button>
@@ -78,9 +81,10 @@ export default {
   data () {
     return {
       articleList: [],
+      isRefresh: false,
       articleStatus: ['DISPLAY', 'ADD', 'READ', 'EDIT'],
       currentArticlePage: 1,
-      currentArcticleId: null,
+      currentArticleId: null,
       currentArticleStatus: '',
       isDialogVisible: false,
       activeCollapseName: null, // string
@@ -104,8 +108,14 @@ export default {
   unmount () {
   },
   methods: {
+    deleteArticle (atcId) {
+      this.currentArticleId = atcId
+      this.dialogTitle = '请求确认'
+      this.currentDialogStatus = this.dialogStatus[2]
+      this.isDialogVisible = true
+    },
     readArticle (atcId) {
-      this.currentArcticleId = atcId
+      this.currentArticleId = atcId
       this.currentArticleStatus = this.articleStatus[2]
     },
     submitEditedArticle (msg) {
@@ -113,7 +123,7 @@ export default {
     },
     editArticle (aId) {
       this.currentArticleStatus = this.articleStatus[3]
-      this.currentArcticleId = aId
+      this.currentArticleId = aId
     },
     cancleArticleOption (msg) {
       console.log(msg)
@@ -264,6 +274,14 @@ export default {
           if (res.code === 0) {
             _self.getChannellist(this.channelPage)
             _self.handleClose()
+          }
+        })
+      } else if (_self.currentArticleId && _self.dialogStatus[2] === _self.currentDialogStatus) {
+        _self.$api.delete('article/' + _self.currentArticleId, null, (er) => {}, (res) => {
+          if (res.code === 0) {
+            // _self.handleClos()
+            _self.isDialogVisible = false
+            _self.isRefresh = !_self.isRefresh
           }
         })
       }

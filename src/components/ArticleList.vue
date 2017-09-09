@@ -18,7 +18,7 @@
 </template>
 <script>
   export default {
-    props: ['channelId', 'page'],
+    props: ['channelId', 'page', 'update'],
     beforeMount () {
       // this.getArticles(this.channel_id, this.currentPaga)
     },
@@ -33,13 +33,15 @@
       }
     },
     methods: {
+      deleteArticle (evt) {
+        evt ? this.$emit('delete-article', evt.target.id) : null
+      },
       readArticle (evt) {
         evt ? this.$emit('read-article', evt.target.id) : null
       },
       editArticle (evt) {
         evt ? this.$emit('edit-article', evt.target.id) : null
       },
-      deleteArticle () {},
       getArticles (channelId, page) {
         let params = {}
         let _self = this
@@ -60,6 +62,9 @@
       },
       'page': function (val, oldVal) {
         val === oldVal ? null : this.currentPaga = val && this.getArticles(this.channel_id, this.currentPaga)
+      },
+      'update': function () {
+        this.getArticles(this.channel_id, this.currentPaga)
       }
     }
   }
