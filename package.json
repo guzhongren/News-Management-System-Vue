@@ -15,7 +15,8 @@
   "dependencies": {
     "element-ui": "^1.4.4",
     "vue": "^2.4.2",
-    "vue-router": "^2.7.0"
+    "vue-router": "^2.7.0",
+    "vue-weui-ueditor": "^0.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

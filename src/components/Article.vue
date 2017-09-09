@@ -14,6 +14,7 @@
     </el-form-item>
     <el-form-item label="内容">
       <el-input type="textarea" v-model='willAddArticle.content' placeholder="请输入内容"></el-input>
+      <!-- <weuiUEditor v-model='willAddArticle.content'></weuiUEditor> -->
     </el-form-item>
     <el-form-item label="缩略图">
       <el-upload drag :on-change='uploadImg' action="https://jsonplaceholder.typicode.com/posts/">
@@ -29,8 +30,13 @@
   </el-form>
 </template>
 <script>
+import weuiUEditor from 'vue-weui-ueditor'
+import 'vue-weui-ueditor/dist/vue-weui-ueditor.min.css'
 export default {
   props: ['channelId', 'articleId'],
+  components: {
+    'weuiUEditor': weuiUEditor
+  },
   created  () {
     this.willEditArticleId = this.articleId
     this.getCurrentUserInfo()
