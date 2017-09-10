@@ -85,12 +85,10 @@ export default {
       console.log(this.willAddArticle)
     },
     cancelArticle (evt) {
-      console.log(evt)
       // this.currentArticleStatus = this.`articleStatus[0]
       this.$emit('cancleArticle', 'canncel-add')
     },
     submitArticle (evt) {
-      console.log(this.willAddArticle)
       // this.willAddArticle.author ? null : this.willAddArticle.author = this.currentUser.account
       this.willAddArticle.editor ? null : this.willAddArticle.editor = this.currentUser.account
       if (!this.willEditArticleId) {

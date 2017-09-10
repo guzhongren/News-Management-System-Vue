@@ -40,7 +40,7 @@
         </div>
         <!-- read article -->
         <div v-if='currentArticleStatus === articleStatus[2]' class='' id='read'>
-          <article-reader :articleId='currentArticleId'></article-reader>
+          <article-reader :articleId='currentArticleId' v-on:go-back='processGoBack'></article-reader>
         </div>
         <!-- eidt article -->
         <div v-if='currentArticleStatus === articleStatus[3]'>
@@ -108,6 +108,9 @@ export default {
   unmount () {
   },
   methods: {
+    processGoBack () {
+      this.currentArticleStatus = this.articleStatus[0]
+    },
     deleteArticle (atcId) {
       this.currentArticleId = atcId
       this.dialogTitle = '请求确认'

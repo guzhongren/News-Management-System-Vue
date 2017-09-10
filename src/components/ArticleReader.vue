@@ -1,6 +1,7 @@
 <template>
   <div v-if='willAddArticle' class='atc' id='willAddArticle.id'>
     <div class="articleHeader">
+      <el-button @click='goBack' class='goBack' type="primary" size="mini"><i class="fa fa-arrow-left" aria-hidden="true"></i>返回</el-button>
       <h1 >{{willAddArticle.title}}</h1>
       <el-row>
         <el-col :span="8"><h4>作者： {{willAddArticle.author}}</h4></el-col>
@@ -32,6 +33,9 @@ export default {
     }
   },
   methods: {
+    goBack () {
+      this.$emit('go-back')
+    },
     getArticleById (articleId, callback) {
       let _self = this
       _self.$api.get('article/' + articleId, null, (er) => {}, (res) => {
