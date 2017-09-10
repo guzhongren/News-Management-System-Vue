@@ -1,0 +1,71 @@
+.itemBox {
+    cursor: pointer;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background-color: #FFF;
+    border-bottom: 3px solid #f89927;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    text-decoration: none;
+    transform: translate3d(0,0,0);
+    transition: 0.3s;
+    user-select: none;
+}
+.itemBox .oprations {
+    position: absolute;
+    width: 100%;
+    height: 110px;
+    bottom: -114px;
+    text-align: center;
+    line-height: 24px;
+    background-color: rgba(255, 255, 255, .97);
+    transition: all .3s ease-out;
+}
+.itemBox .oprations > ul {
+  margin-top: 12px;
+}
+.itemBox .oprations a {
+    color: #666;
+    text-decoration: none;
+}
+.itemBox .oprations a:hover,
+.itemBox .oprations a:focus {
+    color: #FF5A69;
+    text-decoration: none;
+}
+.itemBox img {
+    margin: 0;
+    border: 0;
+    width: 100%;
+}
+.itemBox .header {
+    font-size: 16px;
+    color: #007ac2;
+    height: 44px;
+    margin-top: 24px;
+    margin-bottom: 4px;
+    // -webkit-transition: all .2s ease 0s;
+    transition: all .2s ease 0s;
+}
+.itemBox p {
+    font-size: 14px;
+    color: #666;
+    height: 100px;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.itemBox:hover,
+.itemBox:focus {
+    box-shadow:0 22px 43px rgba(0, 0, 0, 0.15);
+    color:#1A4C87;
+    transform:translateY(-4px);
+}
+.itemBox:hover .oprations,
+.itemBox:focus .oprations {
+    bottom: 0;
+}
+.list-unstyled{
+  padding-left: 0;
+  list-style: none;
+}
