@@ -34,9 +34,9 @@
           </div>
           </el-col>
           <el-col class='alige-center'>
-            翻页
-            <!-- <el-pagination current-page.sync="1" page-size="10" layout="total, prev, pager, next" total="100">
-            </el-pagination> -->
+            <div class='marginTop40'>
+              <el-pagination layout="prev, pager, next" :total='managersTotal' @current-change='currenPageChanged'></el-pagination>
+            </div>
           </el-col>
         </div>
       </el-row>
@@ -113,6 +113,7 @@ export default {
         re_password: ''
       },
       managersPage: 1,
+      managersTotal: 1,
       managerStatus: ['DISPLAY', 'ADD', 'EDIT', 'DELETE'],
       currentManagerStatus: ''
     }
@@ -121,6 +122,11 @@ export default {
     this.getManagers()
   },
   methods: {
+    currenPageChanged (val) {
+      console.log(val)
+      this.managersPage = val
+      this.getManagers()
+    },
     deleteManagerEvent (evt) {
       if (evt) {
         this.getManagerById(evt.target.id, (res) => {
@@ -166,6 +172,7 @@ export default {
       _self.$api.get('manage', params, (er) => {}, (res) => {
         if (res.code === 0) {
           _self.managers = res.data
+          _self.managersTotal = res.data.total
         }
       })
     },

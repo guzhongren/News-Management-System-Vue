@@ -1,7 +1,11 @@
 <template>
     <div class='cms'>
       <el-row class="cms-title">
-        <el-col :span="10"><div class='cms-title-left paddings'><span>{{siteinfo.name}}</span></div></el-col>
+        <el-col :span="10"><div class='cms-title-left paddings'>
+          <img v-if='siteinfo.logo' class='systemImg' :src="siteinfo.logo" ></img>
+          <i v-else class=' systemImg fa fa-newspaper-o'></i>
+          <span>{{siteinfo.name}}</span></div>
+        </el-col>
         <el-col :span="11"><div class='paddings'></div></el-col>
         <el-col :span="3"><div class='paddings'><sign ></sign></div></el-col>
       </el-row>
