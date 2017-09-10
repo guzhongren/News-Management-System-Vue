@@ -1,7 +1,7 @@
 <template>
   <footer class='cmsFooter'>
     <p>Posted by: Congred</p>
-    <p>Copyright &copy 2014 - 2017 CONGRED. All Rights Reserved {{siteinfo.copyright}} 备案号:京ICP备17003922号-1.</p>
+    <p>Copyright &copy 2014 - 2017 CONGRED. All Rights Reserved {{siteinfo ? siteinfo.copyright : null}} 备案号:京ICP备17003922号-1.</p>
   </footer>
 </template>
 <script>
@@ -21,6 +21,12 @@
       }
     },
     methods: {
+    },
+    watch: {
+      'siteInfo': function (val, old) {
+        console.log(val, this.siteInfo)
+        val === old ? null : this.siteinfo = val
+      }
     }
   }
 </script>

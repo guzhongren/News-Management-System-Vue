@@ -87,7 +87,10 @@ export default {
     getSiteInfo () {
       let _self = this
       _self.$api.get('site', null, (er) => {}, (res) => {
-        res.code === 0 ? _self.siteinfo = res.data && _self.$compUtils.setSiteInfo(res.data) : null
+        if (res.code === 0) {
+          _self.siteinfo = res.data
+          _self.$compUtils.setSiteInfo(res.data)
+        }
       })
     }
   }
