@@ -25,7 +25,6 @@
                 </span>
               </el-col>
             </el-row>
-
           </div>
         </div>
       </el-col>
