@@ -1,4 +1,4 @@
-# congred-demo
+# News-Management-System-Vue
 
 > A Vue.js project
 
