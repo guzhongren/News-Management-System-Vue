@@ -4,12 +4,13 @@
       <el-form class='loginForm' label-position='left' label-width="80px" >
         <!-- <el-form-item label="名称"> -->
           <el-input class='loginInput' placeholder="请输入内容" @change='usernameChange' >
-            <template slot="prepend">用户名</template>
+            <!-- <template slot="prepend">用户名</template> -->
+            <i slot="prepend" class="fa fa-user fa-fw" aria-hidden="true"></i>
           </el-input>
         <!-- </el-form-item> -->
         <!-- <el-form-item label="活动区域"> -->
           <el-input class='loginInput' type='password' placeholder="请输入内容" @change='userPassChange' >
-            <template slot="prepend">密码</template>
+            <i slot="prepend" class="fa fa-key fa-fw"></i>
           </el-input>
         <!-- </el-form-item> -->
         <!-- <el-form-item label="活动形式"> -->

@@ -5749,7 +5749,7 @@ vue-template-es2015-compiler@^1.5.3:
 
 vue-weui-ueditor@^0.2.1:
   version "0.2.1"
-  resolved "http://r.cnpmjs.org/vue-weui-ueditor/download/vue-weui-ueditor-0.2.1.tgz#8b5282ae0fb3123d9b01404f4841cb0201d883b8"
+  resolved "https://registry.yarnpkg.com/vue-weui-ueditor/-/vue-weui-ueditor-0.2.1.tgz#8b5282ae0fb3123d9b01404f4841cb0201d883b8"
   dependencies:
     popper.js "^0.6.4"
     vue "^2.3.3"

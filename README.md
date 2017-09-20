@@ -23,5 +23,8 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 效果
+![登录](./img/login.png)
+<center>登录</center>
+![基本设置](./img/base_setting.png)
+<center>基本设置</center>
