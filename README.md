@@ -25,9 +25,7 @@ npm test
 ```
 ## 效果
 ![登录](./img/login.png)
-
 <center>登录</center>
 
 ![基本设置](./img/base_setting.png)
-
 <center>基本设置</center>
